@@ -1,0 +1,43 @@
+---
+title: "API Practice"
+author: "Liz Peterson"
+format: html
+editor: visual
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r}
+library(dataRetrieval)
+library(tidyverse)
+```
+
+```{r}
+# Set parameters for the query
+
+siteNumber <- "11118500"
+parameterCd <- "00060" # Discharge
+startDate <- "2023-08-19"
+endDate <- "2023-08-22"
+```
+
+```{r}
+# Run query
+discharge <- readNWISuv(siteNumber, parameterCd, startDate, endDate)
+# here, we are using the function with the ending -uv which means unit values - breaking up the time series into 15 minute segments
+```
+
+```{r}
+ggplot(data = discharge, aes(x = dateTime, y = X_00060_00000)) +
+  geom_line() +
+  labs(title = "Discharge values in the Ventura River",
+       x = "Date",
+       y = "Discharge (ft³/s)")
+```
+
+```{r}
+max_discharge <- max(discharge$X_00060_00003)
+```
+
+
+
